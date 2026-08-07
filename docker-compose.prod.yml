@@ -1,0 +1,57 @@
+# Production compose for the Hostinger VPS (Docker + Traefik template).
+# Usage on the server:
+#   cp .env.production.example .env   (fill in secrets)
+#   docker compose -f docker-compose.prod.yml up -d --build
+#   docker compose -f docker-compose.prod.yml exec web npx prisma db seed   (first boot only)
+#
+# The `traefik` network name and certresolver are the ones used by Hostinger's
+# Ubuntu-24.04-with-Docker-and-Traefik template; adjust if the server differs.
+
+services:
+  web:
+    build: .
+    restart: unless-stopped
+    environment:
+      DATABASE_URL: mysql://karimax:${DB_PASSWORD}@db:3306/karimax_site
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD}
+      ADMIN_SECRET: ${ADMIN_SECRET}
+      SITE_URL: https://karimlazaar.com
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - internal
+      - traefik
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.karimax.rule=Host(`karimlazaar.com`) || Host(`www.karimlazaar.com`)"
+      - "traefik.http.routers.karimax.entrypoints=websecure"
+      - "traefik.http.routers.karimax.tls.certresolver=letsencrypt"
+      - "traefik.http.services.karimax.loadbalancer.server.port=3000"
+      - "traefik.docker.network=traefik"
+
+  db:
+    image: mysql:8.4
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MYSQL_DATABASE: karimax_site
+      MYSQL_USER: karimax
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - dbdata:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${DB_ROOT_PASSWORD}"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    networks:
+      - internal
+
+volumes:
+  dbdata:
+
+networks:
+  internal:
+  traefik:
+    external: true

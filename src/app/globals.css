@@ -1,0 +1,336 @@
+@import "tailwindcss";
+
+/* ---------- Site theme tokens (unlayered so they win over @layer sw).
+   NOTE: must also target .sw-root — the engine sets its light defaults directly
+   on that element inside @layer sw, and a direct declaration beats an inherited
+   one, so :root alone would lose. ---------- */
+:root,
+.sw-root {
+  --sw-bg: #15132b;
+  --sw-ink: #f2effa;
+  --sw-ink-soft: #9a93b8;
+  --sw-accent: #8b7cf6;
+  --sw-font-display: var(--font-sora), "Segoe UI", system-ui, sans-serif;
+  --sw-font-body: var(--font-inter), -apple-system, "Segoe UI", system-ui, sans-serif;
+
+  --site-bg: #15132b;
+  --site-bg-raise: #1d1a38;
+  --site-card: #201c3f;
+  --site-line: #2e2955;
+  --site-ink: #f2effa;
+  --site-ink-soft: #9a93b8;
+  --site-violet: #8b7cf6;
+  --site-teal: #4fd1c5;
+  --site-amber: #f0a860;
+  --site-rose: #e38fb8;
+  --site-sky: #86aff5;
+}
+
+html {
+  background: var(--site-bg);
+  color: var(--site-ink);
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: var(--site-bg);
+  color: var(--site-ink);
+  font-family: var(--sw-font-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: color-mix(in srgb, var(--site-violet) 45%, transparent);
+}
+
+/* ---------- Engine dark-theme fixes (route labels + primary buttons) ---------- */
+.sw-route__label {
+  background: color-mix(in srgb, #0e0c1d 88%, transparent) !important;
+  border-color: color-mix(in srgb, var(--sw-accent) 35%, transparent) !important;
+}
+.sw-btn--primary {
+  color: #0e0c1d !important;
+  background: var(--site-ink) !important;
+}
+.sw-copy__tags li {
+  background: color-mix(in srgb, var(--sw-accent) 18%, #0e0c1d) !important;
+  color: color-mix(in srgb, var(--sw-accent) 75%, #fff) !important;
+}
+
+/* ---------- Shared site chrome ---------- */
+.site-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 80;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: clamp(14px, 2.2vw, 22px) clamp(18px, 5vw, 64px);
+  pointer-events: none;
+}
+.site-header > * {
+  pointer-events: auto;
+}
+.site-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: var(--site-ink);
+  font-family: var(--sw-font-display);
+  font-weight: 700;
+  font-size: 1.06rem;
+  letter-spacing: 0.01em;
+}
+.site-brand i {
+  width: 22px;
+  height: 26px;
+  border-radius: 7px 7px 10px 10px;
+  background: linear-gradient(160deg, var(--site-violet), #4c3fa8);
+  box-shadow: 0 6px 16px color-mix(in srgb, var(--site-violet) 45%, transparent);
+}
+.site-nav {
+  display: flex;
+  gap: 4px;
+  padding: 5px;
+  background: color-mix(in srgb, #0e0c1d 62%, transparent);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--site-line);
+  border-radius: 999px;
+}
+.site-nav a {
+  font-size: 0.85rem;
+  font-weight: 550;
+  color: var(--site-ink-soft);
+  text-decoration: none;
+  padding: 8px 15px;
+  border-radius: 999px;
+  transition: color 0.22s, background 0.22s;
+}
+.site-nav a:hover {
+  color: var(--site-ink);
+}
+.site-nav a.active {
+  color: #0e0c1d;
+  background: var(--site-ink);
+}
+@media (max-width: 700px) {
+  .site-nav a {
+    padding: 7px 11px;
+    font-size: 0.8rem;
+  }
+}
+@media (max-width: 480px) {
+  .site-brand span {
+    display: none;
+  }
+  .site-nav a {
+    padding: 7px 9px;
+    font-size: 0.78rem;
+  }
+}
+
+.page-shell {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: clamp(110px, 16vh, 150px) clamp(18px, 5vw, 48px) 80px;
+}
+
+.eyebrow {
+  font-family: var(--sw-font-display);
+  font-weight: 700;
+  font-size: 0.8rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--site-violet);
+}
+
+.page-title {
+  font-family: var(--sw-font-display);
+  font-weight: 700;
+  font-size: clamp(2.1rem, 5vw, 3.4rem);
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+  margin: 12px 0 14px;
+}
+
+.page-lead {
+  color: var(--site-ink-soft);
+  font-size: clamp(1rem, 1.4vw, 1.12rem);
+  line-height: 1.6;
+  max-width: 62ch;
+}
+
+.card {
+  background: linear-gradient(175deg, var(--site-card), #1a1734);
+  border: 1px solid var(--site-line);
+  border-radius: 18px;
+  overflow: hidden;
+  transition: transform 0.25s, border-color 0.25s, box-shadow 0.25s;
+}
+.card:hover {
+  transform: translateY(-4px);
+  border-color: color-mix(in srgb, var(--site-violet) 45%, var(--site-line));
+  box-shadow: 0 18px 44px rgba(8, 6, 24, 0.55);
+}
+
+.chip {
+  display: inline-block;
+  font-size: 0.76rem;
+  font-weight: 600;
+  color: color-mix(in srgb, var(--site-violet) 80%, #fff);
+  background: color-mix(in srgb, var(--site-violet) 16%, transparent);
+  border: 1px solid color-mix(in srgb, var(--site-violet) 32%, transparent);
+  padding: 5px 11px;
+  border-radius: 999px;
+}
+
+.btn {
+  display: inline-block;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.95rem;
+  padding: 12px 24px;
+  border-radius: 999px;
+  transition: transform 0.2s, opacity 0.2s;
+  cursor: pointer;
+  border: 0;
+}
+.btn:hover {
+  transform: translateY(-2px);
+}
+.btn-primary {
+  color: #0e0c1d;
+  background: var(--site-ink);
+}
+.btn-accent {
+  color: #0e0c1d;
+  background: var(--site-violet);
+}
+.btn-ghost {
+  color: var(--site-ink);
+  border: 1.5px solid color-mix(in srgb, var(--site-ink) 28%, transparent);
+  background: transparent;
+}
+
+/* ---------- Article prose ---------- */
+.prose-dark {
+  color: color-mix(in srgb, var(--site-ink) 88%, var(--site-ink-soft));
+  font-size: 1.06rem;
+  line-height: 1.75;
+}
+.prose-dark h2 {
+  font-family: var(--sw-font-display);
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin: 2.2em 0 0.6em;
+  letter-spacing: -0.01em;
+  color: var(--site-ink);
+}
+.prose-dark h3 {
+  font-family: var(--sw-font-display);
+  font-size: 1.22rem;
+  font-weight: 700;
+  margin: 1.8em 0 0.5em;
+  color: var(--site-ink);
+}
+.prose-dark p {
+  margin: 1em 0;
+}
+.prose-dark a {
+  color: var(--site-teal);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.prose-dark ul,
+.prose-dark ol {
+  padding-left: 1.4em;
+  margin: 1em 0;
+}
+.prose-dark li {
+  margin: 0.35em 0;
+}
+.prose-dark blockquote {
+  border-left: 3px solid var(--site-violet);
+  margin: 1.4em 0;
+  padding: 0.2em 0 0.2em 1.2em;
+  color: var(--site-ink-soft);
+  font-style: italic;
+}
+.prose-dark code {
+  font-family: ui-monospace, "Cascadia Code", Menlo, monospace;
+  font-size: 0.9em;
+  background: #0e0c1d;
+  border: 1px solid var(--site-line);
+  border-radius: 6px;
+  padding: 0.15em 0.45em;
+}
+.prose-dark pre {
+  background: #0e0c1d;
+  border: 1px solid var(--site-line);
+  border-radius: 12px;
+  padding: 18px 20px;
+  overflow-x: auto;
+  margin: 1.4em 0;
+}
+.prose-dark pre code {
+  background: none;
+  border: 0;
+  padding: 0;
+}
+.prose-dark img {
+  max-width: 100%;
+  border-radius: 12px;
+  margin: 1.5em 0;
+}
+.prose-dark hr {
+  border: 0;
+  border-top: 1px solid var(--site-line);
+  margin: 2.5em 0;
+}
+.prose-dark strong {
+  color: var(--site-ink);
+}
+
+/* ---------- Admin forms ---------- */
+.field {
+  display: block;
+  width: 100%;
+  background: #12102a;
+  color: var(--site-ink);
+  border: 1px solid var(--site-line);
+  border-radius: 10px;
+  padding: 11px 14px;
+  font-size: 0.95rem;
+  font-family: var(--sw-font-body);
+}
+.field:focus {
+  outline: 2px solid color-mix(in srgb, var(--site-violet) 60%, transparent);
+  outline-offset: 1px;
+}
+textarea.field {
+  font-family: ui-monospace, "Cascadia Code", Menlo, monospace;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  resize: vertical;
+}
+.label {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--site-ink-soft);
+  margin: 0 0 7px;
+}
+
+/* ---------- Landing post-film section ---------- */
+.after-film {
+  position: relative;
+  z-index: 30;
+  background: linear-gradient(180deg, transparent, var(--site-bg) 12%);
+}

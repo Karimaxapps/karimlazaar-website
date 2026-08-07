@@ -1,0 +1,45 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+enum ArticleStatus {
+  DRAFT
+  PUBLISHED
+}
+
+model Article {
+  id          Int           @id @default(autoincrement())
+  slug        String        @unique
+  title       String
+  excerpt     String        @db.Text
+  content     String        @db.LongText
+  coverImage  String?
+  tags        String?
+  status      ArticleStatus @default(DRAFT)
+  publishedAt DateTime?
+  readMinutes Int           @default(5)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  @@index([status, publishedAt])
+}
+
+model Product {
+  id          Int      @id @default(autoincrement())
+  slug        String   @unique
+  name        String
+  tagline     String
+  description String   @db.Text
+  image       String?
+  link        String?
+  accent      String?
+  featured    Boolean  @default(true)
+  sortOrder   Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
