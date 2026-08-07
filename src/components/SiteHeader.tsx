@@ -18,7 +18,8 @@ export default function SiteHeader() {
   return (
     <header className="site-header">
       <Link href="/" className="site-brand">
-        <i aria-hidden />
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/media/karim-logo.webp" alt="" className="site-brand__mark" />
         <span>Karim Lazaar</span>
       </Link>
       <nav className="site-nav" aria-label="Site">

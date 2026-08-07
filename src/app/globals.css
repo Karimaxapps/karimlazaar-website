@@ -86,12 +86,14 @@ body {
   font-size: 1.06rem;
   letter-spacing: 0.01em;
 }
-.site-brand i {
-  width: 22px;
-  height: 26px;
-  border-radius: 7px 7px 10px 10px;
-  background: linear-gradient(160deg, var(--site-violet), #4c3fa8);
-  box-shadow: 0 6px 16px color-mix(in srgb, var(--site-violet) 45%, transparent);
+.site-brand__mark {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+  border: 1.5px solid color-mix(in srgb, var(--site-violet) 55%, transparent);
+  box-shadow: 0 4px 14px color-mix(in srgb, var(--site-violet) 40%, transparent);
 }
 .site-nav {
   display: flex;
