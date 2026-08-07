@@ -59,41 +59,34 @@ export default function ServicesPage() {
         sketch to the running system. Three ways we can work together:
       </p>
 
-      <div style={{ marginTop: 48, display: "grid", gap: 24 }}>
-        {SERVICES.map((s, idx) => (
+      <div style={{ marginTop: 48, display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(300px,1fr))", gap: 22 }}>
+        {SERVICES.map((s) => (
           <div
             key={s.name}
-            className="card service-card"
-            style={{ "--pc": s.accent } as React.CSSProperties}
+            className="card"
+            style={{ "--pc": s.accent, display: "flex", flexDirection: "column" } as React.CSSProperties}
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
+            {/* Native 3:2, flush with the card edges — artwork fully visible, never cropped. */}
             <img
               src={s.image}
               alt={`${s.name} illustration`}
-              style={{
-                // Native 3:2 — artwork fully visible, never cropped.
-                width: "100%",
-                aspectRatio: "3/2",
-                objectFit: "cover",
-                display: "block",
-                alignSelf: "center",
-                order: idx % 2 === 0 ? 0 : 1,
-              }}
+              style={{ width: "100%", aspectRatio: "3/2", objectFit: "cover", display: "block" }}
             />
             <div
               style={{
-                padding: "clamp(24px,3.6vw,40px)",
+                padding: "clamp(20px,2.6vw,28px)",
                 display: "flex",
                 flexDirection: "column",
-                gap: 14,
-                justifyContent: "center",
+                gap: 13,
+                flexGrow: 1,
               }}
             >
               <div
                 style={{
                   fontFamily: "var(--sw-font-display)",
                   fontWeight: 800,
-                  fontSize: "clamp(1.3rem,2.4vw,1.65rem)",
+                  fontSize: "clamp(1.2rem,1.8vw,1.4rem)",
                   color: s.accent,
                 }}
               >

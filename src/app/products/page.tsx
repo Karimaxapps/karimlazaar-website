@@ -28,39 +28,28 @@ export default async function ProductsPage() {
           The foundry is warming up — products are being added.
         </p>
       ) : (
-        <div style={{ marginTop: 48, display: "grid", gap: 24 }}>
-          {products.map((p, i) => (
+        <div style={{ marginTop: 48, display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(340px,1fr))", gap: 22 }}>
+          {products.map((p) => (
             <div
               key={p.id}
               className="card"
-              style={{
-                display: "grid",
-                gridTemplateColumns: p.image ? "minmax(0,5fr) minmax(0,7fr)" : "1fr",
-                alignItems: "stretch",
-              }}
+              style={{ display: "flex", flexDirection: "column" }}
             >
               {p.image && (
                 // eslint-disable-next-line @next/next/no-img-element
+                // Native 3:2, flush with the card edges — artwork fully visible, never cropped.
                 <img
                   src={p.image}
                   alt={`${p.name} visual`}
-                  style={{
-                    // Native 3:2 — artwork fully visible, never cropped.
-                    width: "100%",
-                    aspectRatio: "3/2",
-                    objectFit: "cover",
-                    display: "block",
-                    alignSelf: "center",
-                    order: i % 2 === 0 ? 0 : 1,
-                  }}
+                  style={{ width: "100%", aspectRatio: "3/2", objectFit: "cover", display: "block" }}
                 />
               )}
-              <div style={{ padding: "clamp(22px,3.4vw,38px)", display: "flex", flexDirection: "column", gap: 12, justifyContent: "center" }}>
+              <div style={{ padding: "clamp(20px,2.6vw,28px)", display: "flex", flexDirection: "column", gap: 12, flexGrow: 1 }}>
                 <div
                   style={{
                     fontFamily: "var(--sw-font-display)",
                     fontWeight: 800,
-                    fontSize: "clamp(1.3rem,2.4vw,1.7rem)",
+                    fontSize: "clamp(1.2rem,1.8vw,1.45rem)",
                     color: p.accent ?? "var(--site-violet)",
                   }}
                 >
@@ -71,7 +60,7 @@ export default async function ProductsPage() {
                   {p.description}
                 </p>
                 {p.link && (
-                  <div style={{ marginTop: 8 }}>
+                  <div style={{ marginTop: "auto", paddingTop: 14 }}>
                     <a href={p.link} target="_blank" rel="noreferrer" className="btn btn-ghost" style={{ fontSize: "0.88rem", padding: "10px 20px" }}>
                       Visit project ↗
                     </a>
