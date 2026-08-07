@@ -1,6 +1,22 @@
 import { PrismaClient } from "@prisma/client";
+import { readFileSync } from "fs";
 
 const prisma = new PrismaClient();
+
+type InterestArticle = {
+  slug: string;
+  title: string;
+  excerpt: string;
+  tags: string;
+  content: string;
+  interest: string;
+  coverImage: string;
+  publishedAt: string;
+};
+
+const INTEREST_ARTICLES: InterestArticle[] = JSON.parse(
+  readFileSync(new URL("./interest-articles.json", import.meta.url), "utf8")
+);
 
 const ARTICLES = [
   {
@@ -10,6 +26,7 @@ const ARTICLES = [
       "Live television is the harshest UX lab on earth. Here is what years around control rooms taught me about building software that people can trust under pressure.",
     coverImage: "/media/cover-broadcast.webp",
     tags: "Broadcast, Design Engineering, Reliability",
+    interest: "craft",
     status: "PUBLISHED" as const,
     publishedAt: new Date("2026-07-02T09:00:00Z"),
     content: `
@@ -55,6 +72,7 @@ Broadcast taught me that reliability is not an engineering property bolted onto 
       "Motion is not decoration — it is information about space, causality, and attention. A practical framework for using camera language in product design without hurting performance.",
     coverImage: "/media/cover-cinematic.webp",
     tags: "Cinematic UX, Motion, 3D",
+    interest: "craft",
     status: "PUBLISHED" as const,
     publishedAt: new Date("2026-07-19T09:00:00Z"),
     content: `
@@ -98,6 +116,7 @@ Cinema spent a century learning how to move a camera. Product design gets to inh
       "The broadcast tech world is huge, fragmented, and documented mostly in exhibition-hall PDFs. A build log on turning NAB, IBC and Inter BEE floor knowledge into a living platform.",
     coverImage: "/media/cover-medialink.webp",
     tags: "MediaLinkPro, Build Log, Broadcast",
+    interest: "craft",
     status: "PUBLISHED" as const,
     publishedAt: new Date("2026-08-05T09:00:00Z"),
     content: `
@@ -206,8 +225,27 @@ async function main() {
     const words = a.content.split(/\s+/).filter(Boolean).length;
     await prisma.article.upsert({
       where: { slug: a.slug },
-      update: {},
+      update: { interest: a.interest },
       create: { ...a, readMinutes: Math.max(1, Math.round(words / 220)) },
+    });
+  }
+  for (const a of INTEREST_ARTICLES) {
+    const words = a.content.split(/\s+/).filter(Boolean).length;
+    await prisma.article.upsert({
+      where: { slug: a.slug },
+      update: { interest: a.interest },
+      create: {
+        slug: a.slug,
+        title: a.title,
+        excerpt: a.excerpt,
+        tags: a.tags,
+        content: a.content,
+        interest: a.interest,
+        coverImage: a.coverImage,
+        status: "PUBLISHED",
+        publishedAt: new Date(a.publishedAt),
+        readMinutes: Math.max(1, Math.round(words / 220)),
+      },
     });
   }
   for (const p of PRODUCTS) {

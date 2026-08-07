@@ -80,10 +80,10 @@ export const WORLD_CONFIG = {
       scroll: 1.5,
       ease: "dwell",
       linger: 0.85,
-      eyebrow: "What I write",
-      title: "Notes from the workshop.",
-      body: "Essays on cinematic UX, design engineering, and building products solo — published right here.",
-      tags: ["Articles", "Cinematic UX", "Build logs"],
+      eyebrow: "What I write & wonder about",
+      title: "A universe of curiosity.",
+      body: "The library holds more than build logs — essays on AI futures, quantum ideas, night skies, robots, and the strange economics of the brain.",
+      tags: ["AI", "Quantum", "Astronomy", "Robotics", "Neuro"],
     },
     {
       id: "observatory",
@@ -98,7 +98,7 @@ export const WORLD_CONFIG = {
       tags: [],
       cta: {
         primary: { label: "Get in touch", href: "/contact" },
-        secondary: { label: "Read the articles", href: "/articles" },
+        secondary: { label: "Explore the universe", href: "/articles" },
       },
     },
   ],

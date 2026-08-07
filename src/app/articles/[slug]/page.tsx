@@ -5,6 +5,7 @@ import { marked } from "marked";
 import { prisma } from "@/lib/db";
 import { isAdmin } from "@/lib/auth";
 import { formatDate } from "@/lib/slug";
+import { getInterest } from "@/lib/interests";
 
 export const dynamic = "force-dynamic";
 
@@ -41,6 +42,34 @@ export default async function ArticlePage({ params }: Props) {
       </Link>
 
       <header style={{ margin: "26px 0 34px" }}>
+        {(() => {
+          const interest = getInterest(article.interest);
+          if (!interest) return null;
+          return (
+            <Link
+              href={`/articles#${interest.slug}`}
+              className="chip"
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 8,
+                marginBottom: 16,
+                textDecoration: "none",
+                color: `color-mix(in srgb, ${interest.color} 80%, #fff)`,
+                background: `color-mix(in srgb, ${interest.color} 14%, transparent)`,
+                borderColor: `color-mix(in srgb, ${interest.color} 35%, transparent)`,
+              }}
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={interest.planet}
+                alt=""
+                style={{ width: 20, height: 20, borderRadius: "50%", objectFit: "cover" }}
+              />
+              {interest.name}
+            </Link>
+          );
+        })()}
         {article.status !== "PUBLISHED" && (
           <span
             className="chip"

@@ -4,6 +4,7 @@ import { prisma } from "@/lib/db";
 import { requireAdmin } from "@/lib/auth";
 import { saveArticle, deleteArticle } from "../../actions";
 import DangerButton from "@/components/DangerButton";
+import { INTERESTS } from "@/lib/interests";
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "Edit article" };
@@ -47,6 +48,16 @@ export default async function ArticleEditor({
             <label className="label" htmlFor="tags">Tags (comma separated)</label>
             <input id="tags" name="tags" className="field" defaultValue={article?.tags ?? ""} placeholder="Cinematic UX, Broadcast" />
           </div>
+        </div>
+
+        <div>
+          <label className="label" htmlFor="interest">Interest cluster (Curiosity Space)</label>
+          <select id="interest" name="interest" className="field" defaultValue={article?.interest ?? ""}>
+            <option value="">— none —</option>
+            {INTERESTS.map((i) => (
+              <option key={i.slug} value={i.slug}>{i.name}</option>
+            ))}
+          </select>
         </div>
 
         <div>

@@ -11,6 +11,7 @@ import {
   SESSION_COOKIE,
 } from "@/lib/auth";
 import { slugify, readMinutes } from "@/lib/slug";
+import { INTERESTS } from "@/lib/interests";
 
 export async function loginAction(formData: FormData) {
   const password = String(formData.get("password") ?? "");
@@ -52,6 +53,8 @@ export async function saveArticle(formData: FormData) {
   const excerpt = String(formData.get("excerpt") ?? "").trim();
   const coverImage = String(formData.get("coverImage") ?? "").trim() || null;
   const tags = String(formData.get("tags") ?? "").trim() || null;
+  const rawInterest = String(formData.get("interest") ?? "").trim();
+  const interest = INTERESTS.some((i) => i.slug === rawInterest) ? rawInterest : null;
   const publish = formData.get("publish") === "on";
 
   const slug = await uniqueSlug(slugify(rawSlug || title), id || undefined);
@@ -64,6 +67,7 @@ export async function saveArticle(formData: FormData) {
     excerpt,
     coverImage,
     tags,
+    interest,
     readMinutes: readMinutes(content),
     status: publish ? ("PUBLISHED" as const) : ("DRAFT" as const),
     publishedAt: publish ? existing?.publishedAt ?? new Date() : null,

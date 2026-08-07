@@ -35,6 +35,30 @@ export default async function Home() {
             writing in the library, the story in the control room. Here it is in plain form.
           </p>
 
+          <h3 style={{ fontFamily: "var(--sw-font-display)", fontWeight: 700, margin: "56px 0 18px", fontSize: "1.25rem" }}>
+            What I can do for you
+          </h3>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(260px,1fr))", gap: 18 }}>
+            {[
+              { name: "AI Expertise & Solutions", img: "/media/service-ai.webp", accent: "#8B7CF6", line: "The latest, most powerful AI tools — applied where they pay off." },
+              { name: "Web & App Development", img: "/media/service-webdev.webp", accent: "#4FD1C5", line: "End-to-end product development, from sketch to running system." },
+              { name: "Personalized Solutions", img: "/media/service-custom.webp", accent: "#F0A860", line: "Bespoke systems fitted to how your business actually works." },
+            ].map((s) => (
+              <Link key={s.name} href="/services" className="card" style={{ textDecoration: "none", color: "inherit", display: "block" }}>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={s.img} alt="" style={{ width: "100%", aspectRatio: "3/2", objectFit: "cover", display: "block" }} />
+                <div style={{ padding: 20 }}>
+                  <div style={{ fontFamily: "var(--sw-font-display)", fontWeight: 700, fontSize: "1.06rem", color: s.accent }}>
+                    {s.name}
+                  </div>
+                  <div style={{ color: "var(--site-ink-soft)", fontSize: "0.92rem", marginTop: 8, lineHeight: 1.55 }}>
+                    {s.line}
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+
           {products.length > 0 && (
             <>
               <h3 style={{ fontFamily: "var(--sw-font-display)", fontWeight: 700, margin: "56px 0 18px", fontSize: "1.25rem" }}>

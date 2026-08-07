@@ -20,6 +20,7 @@ model Article {
   content     String        @db.LongText
   coverImage  String?
   tags        String?
+  interest    String?
   status      ArticleStatus @default(DRAFT)
   publishedAt DateTime?
   readMinutes Int           @default(5)
