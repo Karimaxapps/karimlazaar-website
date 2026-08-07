@@ -152,6 +152,18 @@ const PRODUCTS = [
     sortOrder: 1,
   },
   {
+    slug: "socialroute",
+    name: "SocialRoute",
+    tagline: "Plan, schedule, and route your social content — everywhere.",
+    description:
+      "A social media command center: plan campaigns, generate captions, find the best posting slots, and schedule content across every platform from one calendar. The same tool that runs my own channels.",
+    image: "/media/product-socialroute.webp",
+    link: "https://socialroute.net",
+    accent: "#E38FB8",
+    featured: true,
+    sortOrder: 2,
+  },
+  {
     slug: "tachkila",
     name: "Tachkila",
     tagline: "Football formations & squad lineups, beautifully simple.",
@@ -161,7 +173,7 @@ const PRODUCTS = [
     link: "https://github.com/Karimaxapps/Tachkila",
     accent: "#6FBF73",
     featured: true,
-    sortOrder: 2,
+    sortOrder: 3,
   },
   {
     slug: "qr-ordering",
@@ -173,7 +185,7 @@ const PRODUCTS = [
     link: null,
     accent: "#F0A860",
     featured: true,
-    sortOrder: 3,
+    sortOrder: 4,
   },
   {
     slug: "archiinsert",
@@ -185,7 +197,7 @@ const PRODUCTS = [
     link: "https://github.com/Karimaxapps/ArchiInsert",
     accent: "#86AFF5",
     featured: true,
-    sortOrder: 4,
+    sortOrder: 5,
   },
 ];
 
@@ -201,7 +213,8 @@ async function main() {
   for (const p of PRODUCTS) {
     await prisma.product.upsert({
       where: { slug: p.slug },
-      update: {},
+      // keep admin edits, but sync ordering so seeded row positions stay canonical
+      update: { sortOrder: p.sortOrder },
       create: p,
     });
   }
