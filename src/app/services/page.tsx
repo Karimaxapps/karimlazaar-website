@@ -71,11 +71,12 @@ export default function ServicesPage() {
               src={s.image}
               alt={`${s.name} illustration`}
               style={{
+                // Native 3:2 — artwork fully visible, never cropped.
                 width: "100%",
-                height: "100%",
-                minHeight: 230,
+                aspectRatio: "3/2",
                 objectFit: "cover",
                 display: "block",
+                alignSelf: "center",
                 order: idx % 2 === 0 ? 0 : 1,
               }}
             />

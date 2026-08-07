@@ -45,11 +45,12 @@ export default async function ProductsPage() {
                   src={p.image}
                   alt={`${p.name} visual`}
                   style={{
+                    // Native 3:2 — artwork fully visible, never cropped.
                     width: "100%",
-                    height: "100%",
-                    minHeight: 220,
+                    aspectRatio: "3/2",
                     objectFit: "cover",
                     display: "block",
+                    alignSelf: "center",
                     order: i % 2 === 0 ? 0 : 1,
                   }}
                 />

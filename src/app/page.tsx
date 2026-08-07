@@ -91,7 +91,8 @@ export default async function Home() {
                     >
                       {p.image && (
                         // eslint-disable-next-line @next/next/no-img-element
-                        <img src={p.image} alt="" style={{ width: "100%", aspectRatio: "21/9", objectFit: "cover", display: "block" }} />
+                        // Native 3:2 — the artwork is always shown in full, never cropped.
+                        <img src={p.image} alt="" style={{ width: "100%", aspectRatio: "3/2", objectFit: "cover", display: "block" }} />
                       )}
                       <div style={{ padding: "0 24px 24px" }}>
                         <div style={{ display: "flex", alignItems: "flex-end", gap: 14, marginTop: -27 }}>
