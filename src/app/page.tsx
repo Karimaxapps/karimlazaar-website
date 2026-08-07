@@ -5,6 +5,12 @@ import { formatDate } from "@/lib/slug";
 
 export const dynamic = "force-dynamic";
 
+// Real product logos served from public/media (downloaded from the live sites).
+const FLAGSHIP_LOGOS: Record<string, string> = {
+  medialinkpro: "/media/logo-medialinkpro.webp",
+  socialroute: "/media/logo-socialroute.svg",
+};
+
 export default async function Home() {
   const [articles, products] = await Promise.all([
     prisma.article.findMany({
@@ -64,17 +70,99 @@ export default async function Home() {
               <h3 style={{ fontFamily: "var(--sw-font-display)", fontWeight: 700, margin: "56px 0 18px", fontSize: "1.25rem" }}>
                 Flagship products
               </h3>
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(240px,1fr))", gap: 18 }}>
-                {products.map((p) => (
-                  <Link key={p.id} href="/products" className="card" style={{ textDecoration: "none", color: "inherit", padding: 22 }}>
-                    <div style={{ fontFamily: "var(--sw-font-display)", fontWeight: 700, fontSize: "1.08rem", color: p.accent ?? "var(--site-violet)" }}>
-                      {p.name}
-                    </div>
-                    <div style={{ color: "var(--site-ink-soft)", fontSize: "0.92rem", marginTop: 8, lineHeight: 1.55 }}>
-                      {p.tagline}
-                    </div>
-                  </Link>
-                ))}
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(300px,1fr))", gap: 22, maxWidth: 900 }}>
+                {products.map((p) => {
+                  const logo = FLAGSHIP_LOGOS[p.slug];
+                  const domain = p.link ? new URL(p.link).hostname.replace(/^www\./, "") : null;
+                  const accent = p.accent ?? "#8b7cf6";
+                  return (
+                    <a
+                      key={p.id}
+                      href={p.link ?? "/products"}
+                      target={p.link ? "_blank" : undefined}
+                      rel="noreferrer"
+                      className="card"
+                      style={{
+                        textDecoration: "none",
+                        color: "inherit",
+                        display: "block",
+                        borderColor: `color-mix(in srgb, ${accent} 38%, var(--site-line))`,
+                      }}
+                    >
+                      {p.image && (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img src={p.image} alt="" style={{ width: "100%", aspectRatio: "21/9", objectFit: "cover", display: "block" }} />
+                      )}
+                      <div style={{ padding: "0 24px 24px" }}>
+                        <div style={{ display: "flex", alignItems: "flex-end", gap: 14, marginTop: -27 }}>
+                          <span
+                            style={{
+                              width: 58,
+                              height: 58,
+                              borderRadius: 15,
+                              background: "#0e0c1d",
+                              border: `1px solid color-mix(in srgb, ${accent} 40%, var(--site-line))`,
+                              display: "grid",
+                              placeItems: "center",
+                              flexShrink: 0,
+                              boxShadow: "0 10px 26px rgba(5,4,16,0.65)",
+                            }}
+                          >
+                            {logo ? (
+                              // eslint-disable-next-line @next/next/no-img-element
+                              <img src={logo} alt={`${p.name} logo`} style={{ width: 38, height: 38, objectFit: "contain", borderRadius: 8 }} />
+                            ) : (
+                              <span style={{ fontFamily: "var(--sw-font-display)", fontWeight: 800, color: accent }}>
+                                {p.name.slice(0, 1)}
+                              </span>
+                            )}
+                          </span>
+                          <span
+                            style={{
+                              fontFamily: "var(--sw-font-display)",
+                              fontWeight: 800,
+                              fontSize: "1.3rem",
+                              color: accent,
+                              lineHeight: 1,
+                              paddingBottom: 6,
+                            }}
+                          >
+                            {p.name}
+                          </span>
+                        </div>
+                        <div style={{ color: "var(--site-ink)", fontWeight: 550, marginTop: 14, lineHeight: 1.5 }}>
+                          {p.tagline}
+                        </div>
+                        <div style={{ color: "var(--site-ink-soft)", fontSize: "0.9rem", marginTop: 8, lineHeight: 1.6 }}>
+                          {p.description.length > 130 ? `${p.description.slice(0, 130).trimEnd()}…` : p.description}
+                        </div>
+                        {domain && (
+                          <div
+                            style={{
+                              display: "inline-flex",
+                              alignItems: "center",
+                              gap: 8,
+                              marginTop: 18,
+                              padding: "9px 16px",
+                              borderRadius: 999,
+                              border: `1.5px solid color-mix(in srgb, ${accent} 45%, transparent)`,
+                              color: `color-mix(in srgb, ${accent} 85%, #fff)`,
+                              fontSize: "0.88rem",
+                              fontWeight: 600,
+                            }}
+                          >
+                            {domain} ↗
+                          </div>
+                        )}
+                      </div>
+                    </a>
+                  );
+                })}
+              </div>
+              <div style={{ marginTop: 18 }}>
+                <Link href="/products" style={{ color: "var(--site-ink-soft)", fontSize: "0.92rem", textDecoration: "none" }}>
+                  See everything in the foundry →
+                </Link>
               </div>
             </>
           )}

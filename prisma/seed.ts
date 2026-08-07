@@ -165,7 +165,7 @@ const PRODUCTS = [
     description:
       "A discovery platform for the broadcast world: organizations, their flagship products, and live job postings — sourced from the exhibitor floors of NAB, IBC and Inter BEE and curated by hand. Built for the engineers who keep television on air.",
     image: "/media/product-medialink.webp",
-    link: null,
+    link: "https://medialinkpro.net",
     accent: "#4FD1C5",
     featured: true,
     sortOrder: 1,
@@ -191,7 +191,7 @@ const PRODUCTS = [
     image: "/media/product-tachkila.webp",
     link: "https://github.com/Karimaxapps/Tachkila",
     accent: "#6FBF73",
-    featured: true,
+    featured: false,
     sortOrder: 3,
   },
   {
@@ -203,7 +203,7 @@ const PRODUCTS = [
     image: "/media/product-qrorder.webp",
     link: null,
     accent: "#F0A860",
-    featured: true,
+    featured: false,
     sortOrder: 4,
   },
   {
@@ -215,7 +215,7 @@ const PRODUCTS = [
     image: "/media/product-archiinsert.webp",
     link: "https://github.com/Karimaxapps/ArchiInsert",
     accent: "#86AFF5",
-    featured: true,
+    featured: false,
     sortOrder: 5,
   },
 ];
@@ -251,8 +251,8 @@ async function main() {
   for (const p of PRODUCTS) {
     await prisma.product.upsert({
       where: { slug: p.slug },
-      // keep admin edits, but sync ordering so seeded row positions stay canonical
-      update: { sortOrder: p.sortOrder },
+      // keep admin content edits, but sync ordering/flagship status/link
+      update: { sortOrder: p.sortOrder, featured: p.featured, link: p.link },
       create: p,
     });
   }
