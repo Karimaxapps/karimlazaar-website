@@ -70,7 +70,7 @@ export default async function Home() {
               <h3 style={{ fontFamily: "var(--sw-font-display)", fontWeight: 700, margin: "56px 0 18px", fontSize: "1.25rem" }}>
                 Flagship products
               </h3>
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(300px,1fr))", gap: 22, maxWidth: 900 }}>
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(300px,1fr))", gap: 22, maxWidth: 900, margin: "0 auto" }}>
                 {products.map((p) => {
                   const logo = FLAGSHIP_LOGOS[p.slug];
                   const domain = p.link ? new URL(p.link).hostname.replace(/^www\./, "") : null;
